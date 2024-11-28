@@ -91,4 +91,5 @@ class TestSwagTst:
 
 
 
+#pytest sauce_demo_pytest_html.py --html=report.html 
 
