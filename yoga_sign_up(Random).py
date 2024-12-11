@@ -117,12 +117,12 @@ class TestYoGa:
 
 
 
-    # def test_main(self):
-    #     self.test_open_browser()
-    #     self.test_register_test()
-    #     time.sleep(10)
+    def test_main(self):
+         self.test_open_browser()
+         self.test_register_test()
+         time.sleep(10)
 
-#TestYoGa().test_main()
+TestYoGa().test_main()
 
 # import random
 #
