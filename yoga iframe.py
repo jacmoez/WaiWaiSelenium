@@ -1,9 +1,11 @@
+from time import time_ns
+
 from pyotp import random
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import time
 from selenium.webdriver.support.select import Select
+import time
 
 
 class TestYoGa:
@@ -13,58 +15,17 @@ class TestYoGa:
     def test_open_browser(self):
         self.driver.get("https://webfront-uat.yogamovement.com/")
         self.driver.maximize_window()
+        time.sleep(2)
+        #close alert box
         self.driver.find_element(By.XPATH, "/html/body/div/div/aside/div/div[2]/button").click()
         print("Test 1 : Open browser success!")
-
-    #Buy A Class Pack
-    def test_buy_class(self):
-        #Login in
-        self.driver.find_element(By.XPATH, "/html/body/div/div/header/div[2]/div/div/nav[1]/ul/li[2]/a").click()
-        time.sleep(3)
-        self.driver.find_element(By.NAME, "email").send_keys("waiwai60@yopmail.com")
-        time.sleep(1)
-        self.driver.find_element(By.NAME, "password").send_keys("Phy123", Keys.ENTER)
-        time.sleep(3)
-
-        #Buy a class pack
-        self.driver.find_element(By.XPATH, "/html/body/div/div/header/div[2]/div/div/nav[2]/ul/li[3]/a").click()
-        time.sleep(2)
-        self.driver.find_element(By.XPATH, "//*[text()='Buy A Class Pack']").click()
-        time.sleep(5)
-
-        #All Access Click
-        self.driver.find_element(By.XPATH, "/html/body/div/div/div[2]/div/div/div/div/div/div/div[2]/ul/li[2]/a").click()
-        time.sleep(3)
-
-        #All Access Pass + Free Gift Git
-        self.driver.find_element(By.XPATH, "/html/body/div/div/div[2]/div/div/div/div/div/div/div[3]/section[2]/div[2]/div[1]").click()
-        time.sleep(3)
-        self.driver.find_element(By.XPATH, "/html/body/div/div/div[2]/div/div/div/div/div/div/div[3]/section[2]/div[2]/div[1]/div[4]/button").click()
-        time.sleep(3)
-        self.driver.find_element(By.XPATH, "/html/body/div/div/div[2]/div/div/div/div/div/div/div[2]/div[1]/div[1]/form/button").click()
-        time.sleep(5)
-
-    def test_payment_method(self):
-        self.driver.find_element(By.XPATH, "/html/body/div/div/div[2]/div/div/div/div/div/div/div/div[2]/div[2]/div[1]/div[2]/div/div/div[2]/button").click()
-        time.sleep(5)
-        iframe = self.driver.find_element(By.CSS_SELECTOR, "iframe[name^='__privateStripeFrame'][title='Secure card number input frame']")
-        time.sleep(2)
-        self.driver.switch_to.frame(iframe)
-        self.driver.execute_script("""let element = document.querySelector("input[name='hidden']")
-           element.disabl = false;
-           return element""")
-
-        card_number = self.driver.find_element(By.NAME, "cardnumber")
-        card_number.send_keys("411111111111111111")
-
-
 
     def test_register_test(self):
         self.driver.find_element(By.XPATH, "/html/body/div/div/header/div[2]/div/div/nav[1]/ul/li[1]/a").click()
 
         #Ramdom Email
 
-        user_email = [random.randint(0,9) for i in range(3)]
+        user_email = [random.randint(0,9) for i in range(2)]
         num = "".join(str(x) for x in user_email)
 
 
@@ -151,17 +112,113 @@ class TestYoGa:
         time.sleep(2)
         self.driver.find_element(By.XPATH, "/html/body/div/div/div[2]/div/div/div/div/div/main/form/div/div[3]/div/div[2]/div/label/div/div").click()
         print(text)
+
+        time.sleep(5)
         #btn Click
         self.driver.find_element(By.XPATH, "/html/body/div/div/div[2]/div/div/div/div/div/main/form/div/div[3]/div/button").click()
 
         print("Go to next page successfully")
 
 
+    def test_sing_in(self):
+        self.driver.find_element(By.XPATH, "/html/body/div/div/header/div[2]/div/div/nav[1]/ul/li[2]/a").click()
+        time.sleep(2)
+        self.driver.find_element(By.NAME, "email").send_keys("waiwai60@yopmail.com")
+        time.sleep(2)
+        self.driver.find_element(By.NAME, "password").send_keys("Phy123", Keys.RETURN)
+        time.sleep(2)
+        self.driver.find_element(By.XPATH, "/html/body/div/div/aside/div/div[2]/button").click()
+
+    def test_buy_class_pack(self):
+        time.sleep(2)
+        self.driver.find_element(By.XPATH, "/html/body/div[1]/div/header/div[2]/a[2]/div/button[1]").click()
+        time.sleep(2)
+
+        self.driver.find_element(By.LINK_TEXT, "ALL ACCESS").click()
+        time.sleep(2)
+
+
+        self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div[2]/div/div/div/div/div/div/div[3]/section[2]/div[2]/div[1]").click()
+
+
+        # All Access btn Click
+        self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div[2]/div/div/div/div/div/div/div[3]/section[2]/div[2]/div[1]/div[4]/button").click()
+
+
+        time.sleep(2)
+        #Next Btn
+        self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div[2]/div/div/div/div/div/div/div[2]/div[1]/div[1]/form/button").click()
+        print("Test 3:", "All Class Success")
+
+
+
+    def test_summary(self):
+        print(1)
+        img_path = "/Users/user/Desktop/Screenshot 2024-11-27 at 14.49.38.png"
+
+        time.sleep(2)
+        self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div[2]/div/div/div/div/div/div/div/div[2]/div[1]/div/div/div[1]/label/input").send_keys(img_path)
+        print("Image Success!")
+
+
+    def test_payment_method(self):
+        time.sleep(2)
+        #Change Button
+        self.driver.find_element(By.XPATH, "/html/body/div/div/div[2]/div/div/div/div/div/div/div/div[2]/div[2]/div[1]/div[2]/div/div/div[2]/button").click()
+        time.sleep(3)
+
+        js_code = """let element = document.querySelector("input[name='hidden']");
+        element.disable = false;
+        return element"""
+        #Car Number
+        iframe = self.driver.find_element(By.CSS_SELECTOR, "iframe[name^='__privateStripeFrame'][title='Secure card number input frame']")
+
+        self.driver.switch_to.frame(iframe)
+
+        self.driver.execute_script(js_code)
+
+        self.driver.find_element(By.NAME, "cardnumber").send_keys("4111111111111111")
+        self.driver.switch_to.default_content()
+        time.sleep(3)
+
+        #exp-date
+
+        iframe = self.driver.find_element(By.CSS_SELECTOR, "iframe[name^='__privateStripeFrame'][title='Secure expiration date input frame']")
+
+        self.driver.switch_to.frame(iframe)
+
+        self.driver.execute_script(js_code)
+
+        self.driver.find_element(By.NAME, "exp-date").send_keys("12/26")
+        self.driver.switch_to.default_content()
+
+        #CVC
+        iframe = self.driver.find_element(By.CSS_SELECTOR, "iframe[name^='__privateStripeFrame'][title='Secure CVC input frame']")
+
+        self.driver.switch_to.frame(iframe)
+
+        self.driver.execute_script(js_code)
+
+        self.driver.find_element(By.NAME, "cvc").send_keys("123")
+        self.driver.switch_to.default_content()
+        time.sleep(2)
+
+        self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div[2]/div/div/div/div/div/div/div/div[2]/div[2]/div[2]/div[2]/div/button").click()
+
+        time.sleep(3)
+        file_path = "waiwai.png"
+        self.driver.save_screenshot(file_path)
+
+
+        print("Payment Success")
+
     def test_main(self):
         self.test_open_browser()
-        self.test_buy_class()
-        self.test_payment_method()
         #self.test_register_test()
+        self.test_sing_in()
+        self.test_buy_class_pack()
+        #self.test_summary()
+        self.test_payment_method()
         time.sleep(10)
 
 TestYoGa().test_main()
