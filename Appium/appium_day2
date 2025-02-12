@@ -1,0 +1,255 @@
+from appium import webdriver
+from appium.options.android import UiAutomator2Options
+from appium.webdriver.common.appiumby import AppiumBy
+import time
+
+
+options = UiAutomator2Options()
+options.set_capability("ignoreHiddenApiPolicyError",True)
+options.set_capability("platformName","Android")
+URL = 'http://127.0.0.1:4723'
+driver=webdriver.Remote(URL, options=options)
+
+package_name='com.aiamm.plus.uat'
+
+# install app
+def install_app():
+    try:
+        driver.install_app('/Users/user/Documents/AMSProjects/Apks/aia-plus-uat-release-2025-01-08.apk')
+        time.sleep(5)
+    except Exception as e :
+        print("Could not install error")
+    print('------------- install --------')
+
+
+# uninstall if exist
+def uninstall_app():
+
+    if driver.is_app_installed(package_name):
+        driver.remove_app(package_name)
+        print("After uninstalled")
+    else:
+        print('No app is installed')
+    print('----- uninstall ----')
+
+options.set_capability("appPackage",package_name)
+options.set_capability("appWaitActivity","com.aiamm.plus.uat.dev.*")
+
+def open_app():
+    driver.launch_app()
+    time.sleep(2)
+    driver.activate_app(package_name)
+    time.sleep(3)
+    print('------------- App is opened -------------')
+
+
+# change language
+def change_language():
+    # click language drop down
+    language_dd_xpath='//android.view.View[@content-desc="ic_order_down"]'
+    driver.find_element(AppiumBy.XPATH,language_dd_xpath).click()
+
+    time.sleep(3)
+
+    # Burmese
+    burmese_lan_xpath='//android.view.ViewGroup[@resource-id="android:id/content"]/android.view.View/android.view.View/android.view.View[2]/android.view.View[1]/android.view.View[2]'
+    driver.find_element(AppiumBy.XPATH,burmese_lan_xpath).click()
+
+    time.sleep(3)
+
+    # Done button
+    done_btn_xpath='//android.view.ViewGroup[@resource-id="android:id/content"]/android.view.View/android.view.View/android.view.View[2]/android.view.View[2]'
+    driver.find_element(AppiumBy.XPATH,done_btn_xpath).click()
+
+    time.sleep(5)
+
+    # English
+    # click language drop down again
+    driver.find_element(AppiumBy.XPATH,language_dd_xpath).click()
+    # eng language option
+    eng_lan_xpath='//android.view.ViewGroup[@resource-id="android:id/content"]/android.view.View/android.view.View/android.view.View[2]/android.view.View[1]/android.view.View[1]'
+    driver.find_element(AppiumBy.XPATH,eng_lan_xpath).click()
+    # click done button again
+    driver.find_element(AppiumBy.XPATH,done_btn_xpath).click()
+
+    time.sleep(3)
+
+    print('------------- Change language -------------')
+
+
+def login_with_error():
+    time.sleep(5)
+    # login button
+    login_btn_path='//android.widget.ScrollView/android.view.View[2]'
+    driver.find_element(AppiumBy.XPATH,login_btn_path).click()
+
+    time.sleep(5)
+
+    # mobile or email
+    email_or_mobile_path='//v1.m1/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.EditText[1]'
+    email="qa@gmail.com"
+    # add invalid email
+    driver.find_element(AppiumBy.XPATH,email_or_mobile_path).send_keys(email)
+
+    time.sleep(5)
+
+    # password
+    password_path='//v1.m1/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.EditText[2]'
+    # add invalid password
+    password="aq123"
+    driver.find_element(AppiumBy.XPATH,password_path).send_keys(password)
+
+    time.sleep(10)
+    driver.find_element(AppiumBy.ACCESSIBILITY_ID,'Demo').click()
+    time.sleep(5)
+
+    # login button
+    login_btn_path='//v1.m1/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[4]'
+    driver.find_element(AppiumBy.XPATH,login_btn_path).click()
+
+    time.sleep(5)
+
+    # print login error message
+    err_msg_el=driver.find_element(AppiumBy.XPATH,'//android.widget.TextView[@text="Authentication Failed!"]').text
+    print("Error Message : ",err_msg_el)
+
+
+
+    print('------------- login ----------------')
+
+
+def login():
+    time.sleep(5)
+    # login button
+    login_btn_path='//android.widget.ScrollView/android.view.View[2]'
+    driver.find_element(AppiumBy.XPATH,login_btn_path).click()
+
+    time.sleep(5)
+
+    # mobile or email
+    email_or_mobile_path='//v1.m1/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.EditText[1]'
+    phone="09764426445"
+    driver.find_element(AppiumBy.XPATH,email_or_mobile_path).send_keys(phone)
+
+    time.sleep(5)
+
+    # password
+    password_path='//v1.m1/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.EditText[2]'
+    password="P@ssw0rd2026@"
+    driver.find_element(AppiumBy.XPATH,password_path).send_keys(password)
+
+    time.sleep(5)
+    driver.find_element(AppiumBy.ACCESSIBILITY_ID,'Demo').click()
+    time.sleep(5)
+
+    # login button
+    login_btn_path='//v1.m1/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[4]'
+    driver.find_element(AppiumBy.XPATH,login_btn_path).click()
+
+    time.sleep(5)
+
+
+
+
+    print('------------- login ----------------')
+
+
+def logout():
+    # settings
+    driver.find_element(AppiumBy.ACCESSIBILITY_ID,'Settings').click()
+    time.sleep(2)
+    # logout
+    driver.find_element(AppiumBy.XPATH,'//android.widget.TextView[@text="Log out"]').click()
+    # popup ok
+    driver.find_element(AppiumBy.XPATH,'//android.widget.TextView[@text="OK"]').click()
+def register():
+    # register
+    driver.find_element(AppiumBy.XPATH,'//android.widget.TextView[@text="Register now"]').click()
+    time.sleep(3)
+    # No, I am not
+    driver.find_element(AppiumBy.XPATH,'//android.widget.TextView[@text="No, I am not"]').click()
+    time.sleep(2)
+    driver.back()
+    time.sleep(2)
+    # Yes, I am
+    driver.find_element(AppiumBy.XPATH,'//android.widget.TextView[@text="Yes, I am"]').click()
+    time.sleep(2)
+
+def create_account():
+    driver.find_element(AppiumBy.XPATH,'//v1.m1/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[1]/android.widget.EditText[1]').clear()
+    # full name
+    full_name="Wai"
+    driver.find_element(AppiumBy.XPATH,'//v1.m1/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[1]/android.widget.EditText[1]').send_keys(full_name)
+    # dob
+    driver.find_element(AppiumBy.XPATH,'//v1.m1/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[1]/android.widget.EditText[2]').click()
+    time.sleep(10)
+
+
+    # select date
+    driver.find_element(AppiumBy.ACCESSIBILITY_ID,'Switch to selecting a year').click()
+
+    # scroll  year
+    # driver.find_element(
+    #     AppiumBy.ANDROID_UIAUTOMATOR,
+    #     'new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().text("1998"))'
+    # )
+    time.sleep(5)
+    date_view=driver.find_element(AppiumBy.XPATH,'//android.view.ViewGroup/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View[2]/android.view.View[2]/android.view.View')
+    print(date_view.size['height'],date_view.size['width'])
+    print(driver.get_window_size())
+
+    window_size=driver.get_window_size()
+    width=window_size['width']
+    height=window_size['height']
+    x=width/2
+    driver.swipe(x,800,x,1600)
+    time.sleep(3)
+    driver.find_element(AppiumBy.XPATH,'//android.widget.TextView[@text="Navigate to year 1998"]/android.widget.Button').click()
+    time.sleep(3)
+   
+
+
+
+
+def main():
+    # uninstall_app()
+    # time.sleep(10)
+    # install_app()
+    # time.sleep(10)
+    # open_app()
+    # time.sleep(10)
+    # change_language()
+    # login()
+    # logout()
+    # register()
+    create_account()
+
+
+main()
+
+
+
+
+
+
+
+
+
+# # pop up edit
+# driver.find_element(AppiumBy.XPATH,'//android.view.ViewGroup/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View[1]/android.widget.Button').click()
+# time.sleep(5)
+# print('dop popup open')
+#
+# # date_edit_text=driver.find_element(AppiumBy.XPATH,'//android.widget.EditText')
+# # date_edit_text.click()
+# time.sleep(10)
+# driver.find_element(AppiumBy.XPATH,'//android.widget.EditText').send_keys('04/11/1998')
+# time.sleep(5)
+# driver.find_element(AppiumBy.XPATH,'//android.view.ViewGroup/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View[1]/android.widget.Button').click()
+
+
+
+
+
+
+#aia-plus-uat-release-2025-01-08.apk
