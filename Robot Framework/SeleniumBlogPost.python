@@ -1,0 +1,11 @@
+def drop_down_items():
+    driver.find_element(By.ID, "comboBox").send_keys("Item 5")
+    time.sleep(5)
+    driver.find_element(By.XPATH, "//div[11]/div[1]/div/div[5]").click()
+    time.sleep(3)
+
+    # apple link
+    driver.find_element(By.ID, "apple").click()
+    time.sleep(5)
+    driver.execute_script("window.history.back();")
+    time.sleep(3)
